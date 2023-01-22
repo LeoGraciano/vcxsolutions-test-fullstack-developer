@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "vcxsolutions-test-fullstack-developer"
+version = "0.1.0"
+description = ""
+authors = ["Léo Graciano <leonardoferreiragraciano@gmail.com>"]
+readme = "README.md"
+packages = [{include = "vcxsolutions_test_fullstack_developer"}]
+
+[tool.poetry.dependencies]
+python = "3.9.16"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
