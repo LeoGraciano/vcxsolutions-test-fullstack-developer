@@ -1,9 +1,9 @@
-class Stack:
+class Queue:
 
     def __init__(self):
         self.data = ''
         self._type = ''
-        self._sep = "|"
+        self._sep = "%!%"
         self._label = ' -> '
 
     def is_empty(self):
@@ -11,21 +11,17 @@ class Stack:
             return True
         return False
 
-    def push(self, value):
+    def enqueue(self, value):
         self._set_data(value)
 
-    def add(self, value):
-
-        self._set_data(value)
-
-    def pop(self):
+    def dequeue(self):
         if not self.data:
-            raise StackPopException
+            raise QueueDequeueException
 
-        data_first = self._split(self.data)[-1]
-        type_first = self._split(self._type)[-1]
-        self.data = (self._sep).join(self._split(self.data)[:-1])
-        self._type = (self._sep).join(self._split(self._type)[:-1])
+        data_first = self._split(self.data)[0]
+        type_first = self._split(self._type)[0]
+        self.data = (self._sep).join(self._split(self.data)[1:])
+        self._type = (self._sep).join(self._split(self._type)[1:])
 
         result = self._get_value(type_first, data_first)
 
@@ -53,8 +49,8 @@ class Stack:
             self.data = f"{value}"
             self._type = f"{type(value).__name__}"
         else:
-            self.data = f"{value}{self._sep}" + self.data
-            self._type = f"{type(value).__name__}{self._sep}" + self._type
+            self.data += f"{self._sep}{value}"
+            self._type += f"{self._sep}{type(value).__name__}"
 
     def _split(self, data):
         return data.split(self._sep)
@@ -76,6 +72,6 @@ class Stack:
         return f"<{cls}: ({str_repr})>"
 
 
-class StackPopException(Exception):
+class QueueDequeueException(Exception):
     "Não pode remover uma instancia vazia"
     pass

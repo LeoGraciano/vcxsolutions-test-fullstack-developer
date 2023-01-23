@@ -3,7 +3,7 @@
 import unittest
 
 from stack import Stack, StackPopException
-from queue import Queue, QueueDequeueException
+from queue_custom import Queue, QueueDequeueException
 
 
 class StackTestCase(unittest.TestCase):
@@ -47,8 +47,8 @@ class StackTestCase(unittest.TestCase):
         one = 1
         two = 2
 
-        stack.push(one)
         stack.push(two)
+        stack.push(one)
 
         assert len(stack) == 2
 
@@ -60,13 +60,13 @@ class StackTestCase(unittest.TestCase):
     def test_print(self):
         stack = Stack()
 
-        assert print(stack) == ''
+        assert str(stack) == ''
 
         stack.push(3)
         stack.push(1)
         stack.push(2)
 
-        assert print(stack) == '2 -> 1 -> 3'
+        assert str(stack) == '2 -> 1 -> 3'
 
 
 class QueueTestCase(unittest.TestCase):
@@ -123,10 +123,14 @@ class QueueTestCase(unittest.TestCase):
     def test_print(self):
         queue = Queue()
 
-        assert print(queue) == ''
+        assert str(queue) == ''
 
         queue.enqueue(3)
         queue.enqueue(1)
         queue.enqueue(2)
 
-        assert print(queue) == '3 -> 1 -> 2'
+        assert str(queue) == '3 -> 1 -> 2'
+
+
+if __name__ == '__main__':
+    unittest.main()
