@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import unittest
-
 from stack import Stack, StackPopException
 from queue_custom import Queue, QueueDequeueException
+import unittest
+
+
+def capture_print(instance):
+    import io
+    from contextlib import redirect_stdout
+    f = io.StringIO()
+
+    with redirect_stdout(f):
+        print(instance)
+
+    return f.getvalue().replace('\n', '')
 
 
 class StackTestCase(unittest.TestCase):
@@ -52,21 +62,21 @@ class StackTestCase(unittest.TestCase):
 
         assert len(stack) == 2
 
-        assert stack.pop() == two
         assert stack.pop() == one
+        assert stack.pop() == two
 
         assert len(stack) == 0
 
     def test_print(self):
         stack = Stack()
 
-        assert str(stack) == ''
+        assert capture_print(stack) == ""
 
         stack.push(3)
         stack.push(1)
         stack.push(2)
 
-        assert str(stack) == '2 -> 1 -> 3'
+        assert capture_print(stack) == '2 -> 1 -> 3'
 
 
 class QueueTestCase(unittest.TestCase):
@@ -123,13 +133,13 @@ class QueueTestCase(unittest.TestCase):
     def test_print(self):
         queue = Queue()
 
-        assert str(queue) == ''
+        assert capture_print(queue) == ''
 
         queue.enqueue(3)
         queue.enqueue(1)
         queue.enqueue(2)
 
-        assert str(queue) == '3 -> 1 -> 2'
+        assert capture_print(queue) == '3 -> 1 -> 2'
 
 
 if __name__ == '__main__':

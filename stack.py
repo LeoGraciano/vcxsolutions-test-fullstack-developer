@@ -1,79 +1,95 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
 class Stack:
 
     def __init__(self):
-        self.data = ''
-        self._type = ''
-        self._sep = "|"
-        self._label = ' -> '
+        self.head = None
+        self._sep = " -> "
 
     def is_empty(self):
-        if not self.data:
+        if self.head is None:
             return True
         return False
 
-    def push(self, value):
-        self._set_data(value)
+    def push(self, data):
+        self._set_data(data)
 
-    def add(self, value):
-
-        self._set_data(value)
+    def add(self, data):
+        self._set_data(data)
 
     def pop(self):
-        if not self.data:
+        if not self.head:
             raise StackPopException
 
-        data_first = self._split(self.data)[-1]
-        type_first = self._split(self._type)[-1]
-        self.data = (self._sep).join(self._split(self.data)[:-1])
-        self._type = (self._sep).join(self._split(self._type)[:-1])
+        index = (self.__len__() - 1)
+        current_idx = 0
+        current_node = self.head
+        prev_node = None
 
-        result = self._get_value(type_first, data_first)
+        while current_node is not None:
+            if current_idx == index:
+                if prev_node and prev_node.next is not None:
+                    prev_node.next = None
+                    self.head = prev_node
 
-        return result
+                if not prev_node:
+                    self.head = None
 
-    def _get_value(self, t, v):
+                return current_node.data
 
-        if t == 'int':
-            return int(v)
+            prev_node = current_node
+            current_node = current_node.next
+            current_idx += 1
 
-        elif t == 'float':
-            return float(v)
+    def _set_data(self, data):
+        new_node = Node(data)
 
-        elif t == 'list':
-            return list(v)
+        if self.head is None:
+            self.head = new_node
+            return
 
-        elif t == 'dict':
-            return dict(v)
+        current_node = self.head
 
-        else:
-            return str(v)
+        while current_node.next:
+            current_node = current_node.next
 
-    def _set_data(self, value):
-        if not self.data:
-            self.data = f"{value}"
-            self._type = f"{type(value).__name__}"
-        else:
-            self.data = f"{value}{self._sep}" + self.data
-            self._type = f"{type(value).__name__}{self._sep}" + self._type
-
-    def _split(self, data):
-        return data.split(self._sep)
+        current_node.next = new_node
 
     def __len__(self) -> int:
-        if not self.data:
+        if self.head is None:
             return 0
-        return len(self._split(self.data))
+
+        current_node = self.head
+        total = 0
+
+        while current_node:
+            total += 1
+            current_node = current_node.next
+
+        return total
 
     def __str__(self):
-        if not self.data:
-            return self.data
+        contents = self.head
 
-        return self.data.replace(self._sep, self._label)
+        if contents is None:
+            return ""
+
+        temp_str = ''
+        while contents:
+            if temp_str:
+                temp_str = self._sep + temp_str
+            temp_str = str(contents.data) + temp_str
+            contents = contents.next
+
+        return temp_str
 
     def __repr__(self) -> str:
         cls = self.__class__.__name__
-        str_repr = self.data.replace(self._sep, ', ')
-        return f"<{cls}: ({str_repr})>"
+        return f"<{cls}: ({self.__len__})>"
 
 
 class StackPopException(Exception):
